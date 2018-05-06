@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/knocus/validate.svg?style=svg)](https://circleci.com/gh/knocus/validate)
-[![Coverage Status](https://coveralls.io/repos/github/knocus/validate/badge.svg?branch=master)](https://coveralls.io/github/knocus/validate?branch=master)
+(https://coveralls.io/github/knocus/validate?branch=master)
 # Validate
 A golang package for simple validation of email addresses. This package is to be used along with sending a confirmation mail.
 
