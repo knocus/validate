@@ -4,12 +4,12 @@
 A golang package for simple validation of email addresses. This package is to be used along with sending a confirmation mail.
 
 ## Installation 
-
+```go
     go get -u github.com/knocus/validate
-   
+```   
  ## Usage
  
-
+```go
     import (
 	    "github.com/knocus/validate"
 	)
@@ -20,4 +20,5 @@ A golang package for simple validation of email addresses. This package is to be
  		} else {
 			/* prompt the user about error / ask email again. */
 		}
-	}
+    }
+```
