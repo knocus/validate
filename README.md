@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/knocus/validate.svg?style=svg)](https://circleci.com/gh/knocus/validate)
+
 # Validate
 A golang package for simple validation of email addresses. This package is to be used along with sending a confirmation mail.
 
