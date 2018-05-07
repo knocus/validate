@@ -14,7 +14,7 @@ A golang package for simple validation of email addresses. This package is to be
 	    "github.com/knocus/validate"
 	)
 	func main(){
-		err := 
+		err := validate.Email("some.email@gmail.com");
 		if(err == nil){
 			/* send confirmation link / other logic here */
  		} else {
