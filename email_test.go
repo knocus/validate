@@ -11,9 +11,9 @@ var (
 		err     error	
 	}{
 		{email:"sahalsajjad@gmail.com", err:nil,},
-		{email:"sahalsajjad@gmaial.com", err:validate.ErrInvalid,},
-		{email:"sahalsajjad@gmail", err:validate.ErrInvalid,},
-		{email:"", err:validate.ErrInvalid,},
+		{email:"sahalsajjad@gmaial.com", err:validate.ErrInvalidEmail,},
+		{email:"sahalsajjad@gmail", err:validate.ErrInvalidEmail,},
+		{email:"", err:validate.ErrInvalidEmail,},
 
 	}
 )

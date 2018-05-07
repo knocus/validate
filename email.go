@@ -9,19 +9,19 @@ import (
 
 
 var (
-	ErrInvalid = errors.New("Invalid email address")
+	ErrInvalidEmail = errors.New("Invalid email address")
 )
 
 func Email(email string) (error) {
 
 	host, err := ParseHost(email) 
 	if err != nil {
-		return ErrInvalid
+		return ErrInvalidEmail
 	}
 	
 	_, err = net.LookupMX(host)
 	if err != nil {
-		return ErrInvalid
+		return ErrInvalidEmail
  	} 
 	return nil
 }
