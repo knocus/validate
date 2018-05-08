@@ -1,6 +1,6 @@
 
 # Validate
-A golang package for simple validation of email addresses. This package is to be used along with sending a confirmation mail.
+(WORK-IN-PROGRESS) A golang package for simple validation of email addresses. This package is to be used along with sending a confirmation mail.
 
 ## Installation 
 ```go
