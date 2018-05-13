@@ -6,8 +6,6 @@ import (
 	"strings"
 )
 
-
-
 var (
 	ErrInvalidEmail = errors.New("Invalid email address")
 )
@@ -36,7 +34,7 @@ func ParseHost(email string) (host string, err error){
 		err = nil
 	} else {
 		host = ""
-		err = ErrInvalid
+		err = ErrInvalidEmail
 	}
 	
 	return
