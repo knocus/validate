@@ -5,16 +5,16 @@ type constraint struct {
 }
 
 var (
-	LowerCase 			= constraint{"LOWER_CASE"}
-	UpperCase 			= constraint{"UPPER_CASE"}
-	Number	  			= constraint{"NUMBER"}
+	LowerCase 		= constraint{"LOWER_CASE"}
+	UpperCase 		= constraint{"UPPER_CASE"}
+	Number	  		= constraint{"NUMBER"}
 	SpecialCharacter	= constraint{"SPECIAL_CHARACTER"}
 )
 
 type PasswordConfigs struct {
 	MustContain 	[]constraint
-	MinLength		int
-	MaxLength		int	
+	MinLength	int
+	MaxLength	int	
 }
 
 type PasswordConfig func(*PasswordConfigs)
