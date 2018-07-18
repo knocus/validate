@@ -1,4 +1,5 @@
 package validate
+// Warning: This file is under construction. Not ready for use yet.
 
 type constraint struct {
 	val	string
