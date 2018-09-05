@@ -19,8 +19,6 @@ type facebookConfig struct {
 	Scope        string
 }
 
-type object = map[string]interface{}
-
 type fbQuery struct {
 	InspectToken string `url:"inspect_token"`
 	AccessToken  string `url:"access_token"`
