@@ -10,7 +10,7 @@ import (
 	"github.com/google/go-querystring/query"
 )
 
-type facebookConfig struct {
+type FacebookConfig struct {
 	Token        string
 	ClientID     string
 	ClientSecret string
@@ -52,7 +52,7 @@ func httpGet(url string) (interface{}, error) {
 	return data, err
 }
 
-func obtainAppAccessToken(config *facebookConfig) (string, error) {
+func obtainAppAccessToken(config *FacebookConfig) (string, error) {
 	url := generateURL(appTokenPath, config)
 	data, err := httpGet(url)
 	if err != nil {
@@ -68,7 +68,7 @@ func inspectTokenURL(params fbQuery) string {
 	return generateURL(path, params)
 }
 
-func Facebook(config *facebookConfig) (interface{}, error) {
+func Facebook(config *FacebookConfig) (interface{}, error) {
 	appAccessToken, err := obtainAppAccessToken(config)
 	if err != nil {
 		log.Fatal(err)
