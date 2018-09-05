@@ -20,8 +20,8 @@ type FacebookConfig struct {
 }
 
 type fbQuery struct {
-	InspectToken string `url:"inspect_token"`
-	AccessToken  string `url:"access_token"`
+	InputToken  string `url:"input_token"`
+	AccessToken string `url:"access_token"`
 }
 
 const graphURL = "https://graph.facebook.com"
@@ -76,8 +76,8 @@ func Facebook(config *FacebookConfig) (interface{}, error) {
 
 	fmt.Println(appAccessToken)
 	q := fbQuery{
-		InspectToken: config.Token,
-		AccessToken:  appAccessToken,
+		InputToken:  config.Token,
+		AccessToken: appAccessToken,
 	}
 
 	inspectURL := inspectTokenURL(q)
