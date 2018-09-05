@@ -52,8 +52,13 @@ func httpGet(url string) (interface{}, error) {
 	return data, err
 }
 
+func appAccessTokenURL() string {
+	s := []string{graphURL, appTokenPath}
+	return strings.Join(s, "/")
+}
+
 func obtainAppAccessToken(config *FacebookConfig) (string, error) {
-	url := generateURL(appTokenPath, config)
+	url := generateURL(appAccessTokenURL(), config)
 	data, err := httpGet(url)
 	if err != nil {
 		return "", nil
