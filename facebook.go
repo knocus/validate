@@ -3,7 +3,6 @@ package validate
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strings"
 
@@ -11,12 +10,12 @@ import (
 )
 
 type FacebookConfig struct {
-	Token        string
-	ClientID     string
-	ClientSecret string
-	GrantType    string
-	RedirectURI  string
-	Scope        string
+	Token        string `url:"token"`
+	ClientID     string `url:"client_id""`
+	ClientSecret string `url:"client_secret"`
+	GrantType    string `url:"grant_type"`
+	RedirectURI  string `url:"redirect_uri"`
+	Scope        string `url:"scope"`
 }
 
 type fbQuery struct {
@@ -31,8 +30,12 @@ const appTokenPath = "oauth/access_token"
 //GenerateURL takes in the url path and query string
 //parameters and generates a URL out of it.
 func generateURL(path string, params interface{}) string {
+
+	s := []string{graphURL, path}
+	r := strings.Join(s, "/")
 	v, _ := query.Values(params)
-	url := []string{path, v.Encode()}
+
+	url := []string{r, v.Encode()}
 
 	return strings.Join(url, "?")
 }
@@ -52,13 +55,10 @@ func httpGet(url string) (interface{}, error) {
 	return data, err
 }
 
-func appAccessTokenURL() string {
-	s := []string{graphURL, appTokenPath}
-	return strings.Join(s, "/")
-}
-
 func obtainAppAccessToken(config *FacebookConfig) (string, error) {
-	url := generateURL(appAccessTokenURL(), config)
+
+	url := generateURL(appTokenPath, config)
+
 	data, err := httpGet(url)
 	if err != nil {
 		return "", nil
@@ -67,16 +67,11 @@ func obtainAppAccessToken(config *FacebookConfig) (string, error) {
 	return fmt.Sprintf("%s", data), nil
 }
 
-func inspectTokenURL(params fbQuery) string {
-	s := []string{graphURL, debugTokenPath}
-	path := strings.Join(s, "/")
-	return generateURL(path, params)
-}
-
 func Facebook(config *FacebookConfig) (interface{}, error) {
 	appAccessToken, err := obtainAppAccessToken(config)
+
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	fmt.Println(appAccessToken)
@@ -85,7 +80,7 @@ func Facebook(config *FacebookConfig) (interface{}, error) {
 		AccessToken: appAccessToken,
 	}
 
-	inspectURL := inspectTokenURL(q)
+	inspectURL := generateURL(debugTokenPath, q)
 	data, err := httpGet(inspectURL)
 
 	return data, err
