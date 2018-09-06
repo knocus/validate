@@ -1,5 +1,11 @@
 package validate
 
+import (
+	"encoding/json"
+	"net/http"
+	"strings"
+)
+
 type GoogleConfig struct {
 	Token string `url:"id_token"`
 }
@@ -55,6 +61,18 @@ type GoogleAuthenticateSuccessResponse struct {
 	Locale string `json:"locale"`
 }
 
+const tokenEndpoint = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token"
+
 func Google(config *GoogleConfig) (GoogleAuthenticateSuccessResponse, error) {
-	// TODO
+
+	url := strings.Join([]string{tokenEndpoint, config.Token}, "=")
+	res, err := http.Get(url)
+	if err != nil {
+		return GoogleAuthenticateSuccessResponse{}, err
+	}
+
+	var data GoogleAuthenticateSuccessResponse
+	err = json.NewDecoder(res.Body).Decode(&data)
+
+	return data, err
 }
