@@ -1,8 +1,9 @@
 package validate
 
 import (
+	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"log"
 	"net/http"
 	"strings"
 
@@ -11,7 +12,7 @@ import (
 
 type FacebookConfig struct {
 	Token        string `url:"token"`
-	ClientID     string `url:"client_id""`
+	ClientID     string `url:"client_id"`
 	ClientSecret string `url:"client_secret"`
 	GrantType    string `url:"grant_type"`
 	RedirectURI  string `url:"redirect_uri"`
@@ -21,6 +22,24 @@ type FacebookConfig struct {
 type fbQuery struct {
 	InputToken  string `url:"input_token"`
 	AccessToken string `url:"access_token"`
+}
+
+type accessTokenResponse struct {
+	AccessToken string `json:"access_token"`
+}
+
+type InspectTokenResponse struct {
+	Data FacebookAuthenticateSuccessResponse `json:"data"`
+}
+
+type FacebookAuthenticateSuccessResponse struct {
+	AppID       string   `json:"app_id"`
+	Type        string   `json:"type"`
+	Application string   `json:"application"`
+	ExpiresAt   int64    `json:"expires_at"`
+	IsValid     bool     `json:"is_valid"`
+	Scopes      []string `json:"scopes"`
+	UserID      string   `json:"user_id"`
 }
 
 const graphURL = "https://graph.facebook.com"
@@ -40,38 +59,30 @@ func generateURL(path string, params interface{}) string {
 	return strings.Join(url, "?")
 }
 
-func httpGet(url string) (interface{}, error) {
-	res, err := http.Get(url)
-	if err != nil {
-		return "", err
-	}
-
-	data, err := ioutil.ReadAll(res.Body)
-	res.Body.Close()
-	if err != nil {
-		return "", err
-	}
-
-	return data, err
-}
-
 func obtainAppAccessToken(config *FacebookConfig) (string, error) {
 
 	url := generateURL(appTokenPath, config)
 
-	data, err := httpGet(url)
+	r, err := http.Get(url)
+	if err != nil {
+		return "", nil
+	}
+	defer r.Body.Close()
+
+	var atr accessTokenResponse
+	err = json.NewDecoder(r.Body).Decode(&atr)
 	if err != nil {
 		return "", nil
 	}
 
-	return fmt.Sprintf("%s", data), nil
+	return atr.AccessToken, nil
 }
 
-func Facebook(config *FacebookConfig) (interface{}, error) {
+func Facebook(config *FacebookConfig) (FacebookAuthenticateSuccessResponse, error) {
 	appAccessToken, err := obtainAppAccessToken(config)
 
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
 
 	fmt.Println(appAccessToken)
@@ -81,7 +92,14 @@ func Facebook(config *FacebookConfig) (interface{}, error) {
 	}
 
 	inspectURL := generateURL(debugTokenPath, q)
-	data, err := httpGet(inspectURL)
+	res, err := http.Get(inspectURL)
+	if err != nil {
+		return FacebookAuthenticateSuccessResponse{}, err
+	}
+	defer res.Body.Close()
 
-	return data, err
+	var data InspectTokenResponse
+	err = json.NewDecoder(res.Body).Decode(&data)
+
+	return data.Data, err
 }
