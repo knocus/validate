@@ -33,6 +33,7 @@ type InspectTokenResponse struct {
 }
 
 type FacebookAuthenticateSuccessResponse struct {
+	Token       string   `json:"token"`
 	AppID       string   `json:"app_id"`
 	Type        string   `json:"type"`
 	Application string   `json:"application"`
